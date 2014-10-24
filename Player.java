@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class Player extends Object{
 	
-	int currentPosition, i;
+	int currentPosition, i, numberOfTurns;
 	Boolean isInJail, hasJailCard;
 	Random comChest, chan;
 	int landedOn[];// = new int[40];
@@ -13,7 +13,8 @@ public class Player extends Object{
 		this.currentPosition=0;
 		this.isInJail = false;
 		this.hasJailCard = false;
-		landedOn = new int[40];
+		landedOn = new int[41];
+		numberOfTurns=0;
 	}
 
 	public void move(int n){
@@ -42,6 +43,10 @@ public class Player extends Object{
 	public void landed(int currentPosition){
 		this.landedOn[currentPosition]++;
 		System.out.println(this.currentPosition+" has been landed on "+landedOn[this.currentPosition]+" times");
+	}
+	
+	public void increaseTurns(){
+		this.numberOfTurns++;
 	}
 	
 	public void goToJail(){
@@ -121,6 +126,32 @@ public class Player extends Object{
 		comChest = new Random();
 		int card = comChest.nextInt(16);
 		System.out.println("You pulled card number "+card+" from comChest");
+		if(card==0){
+			this.currentPosition=0;
+			landed(0);
+		}
+		else if(card==4){
+			this.hasJailCard=true;
+			landed(this.currentPosition);
+		}
+		else if(card==5){
+			this.goToJail();
+		}
+		else{
+			landed(this.currentPosition);
+		}
 		
+	}
+	
+	@Override
+	public String toString(){
+		String positionFrequencies="";
+		int i;
+		
+		for(i=0;i<40;i++){
+			float freq = (float)this.landedOn[i]/1000;
+			positionFrequencies = positionFrequencies + Game.positions[i]+": "+freq+"\n";
+		}
+		return positionFrequencies;
 	}
 }
