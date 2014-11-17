@@ -147,11 +147,16 @@ public class Player extends Object{
 	public String toString(){
 		String positionFrequencies="";
 		int i;
+		int sum=0;
 		
-		for(i=0;i<40;i++){
-			float freq = (float)this.landedOn[i]/1000;
+		for(i=0;i<41;i++){
+			float freq = (float)this.landedOn[i]/10000;
+			sum = sum + this.landedOn[i];
 			positionFrequencies = positionFrequencies + Game.positions[i]+": "+freq+"\n";
 		}
+		System.out.println("Number of spaces per turn: "+(float)(sum/this.numberOfTurns));
+		System.out.println("Total number of turns: "+this.numberOfTurns+" Total number of landed ons: "+sum);
 		return positionFrequencies;
+		
 	}
 }

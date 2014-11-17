@@ -94,20 +94,28 @@ public class Game extends Object{
 			pawn.isInJail=false;
 			takeTurn(pawn);
 			return;
+		} //use get out of jail card
+		else if(pawn.hasJailCard == true && pawn.numberOfTurns < 5000){
+			pawn.currentPosition=10;
+			pawn.hasJailCard=false;
+			pawn.isInJail=false;
+			takeTurn(pawn);
+			return;
 		}
 		jailRoll = rollDice();
 		if(doublesInARow==1){//Check number of turns, if late game, sit in jail, otherwise get out
-			if(pawn.numberOfTurns>500){
-				pawn.landed(11);
-				return;
-			}
-			else{
-				pawn.currentPosition=10;
-				pawn.landed(10);
-				return;
-			}
+			pawn.currentPosition=11;
+			pawn.move(jailRoll);
+			pawn.increaseTurns();
+			doublesInARow=0;
+			return;
 		}
-		return;
+		else{
+			pawn.landed(10);
+			pawn.increaseTurns();
+			return;
+		}
+		
 		
 	}
 	
@@ -116,7 +124,7 @@ public class Game extends Object{
 		int i;
 		System.out.println("About to test monopoly");
 		Game mon = new Game();
-		while(mon.pawn.numberOfTurns<1000){
+		while(mon.pawn.numberOfTurns<10000){
 			mon.takeTurn(mon.pawn);
 		}
 		System.out.println(mon.pawn.toString());
